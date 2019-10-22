@@ -13,6 +13,7 @@ from django.views import View
 from django_redis import get_redis_connection
 
 from apps.user.models import User
+from apps.user.utils import get_token
 from utils.response_code import RETCODE
 
 
@@ -45,8 +46,9 @@ class Register(View):
             return JsonResponse({'sms_code_errmsg': '输入短信验证码有误'})
         # 使用authenticate时,必须要使用create_user()创建密码加密的用户
         User.objects.create_user(username=username, password=pwd, mobile=mobile)
-
-        return redirect(reverse('login1:index'))
+        response = redirect(reverse('login1:index'))
+        response.set_cookie('username', username, 3600)
+        return response
 
 
 class UsernameView(View):
@@ -142,26 +144,27 @@ class EmailsView(LoginRequiredMixin, View):
         #           from_email=from_email,
         #           recipient_list=recipient_list,
         #           html_message=html_message)
-        from celery_tasks.emails.tasks import send_emails
-        send_emails.delay(request.user.id, email)
+        from celery_tasks.emails.tasks import send_active_email
+        send_active_email.delay(request.user.id, email)
         return JsonResponse({"code": RETCODE.OK, "errmsg": "发送成功"})
 
 
-class EmailsActiteView(View):
+class EmailsActiveView(View):
     def get(self, request):
         token_id = request.GET.get('token')
-        id = request.GET.get('id')
-        email = request.GET.get('email')
+        # id = request.GET.get('id')
+        # email = request.GET.get('email')
         if token_id is None:
             return HttpResponseBadRequest('激活失败')
+        data = get_token(token_id)
         try:
-            user = User.objects.get(id=id,email=email)
+            user = User.objects.get(id=data.get('id'),email=data.get('email'))
         except Exception as e:
             return HttpResponseBadRequest('验证失败')
-        else:
-            user.email_active = True
-            user.save()
+
+        user.email_active = True
+        user.save()
 
         # user = User.objects.update(email_active=True)
 
-            return redirect(reverse('user:center'))
+        return redirect(reverse('user:center'))
