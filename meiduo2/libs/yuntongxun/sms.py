@@ -2,6 +2,7 @@
 
 # 不运行main的使用使用
 from .CCPRestSDK import REST
+# from libs.yuntongxun.CCPRestSDK import REST
 
 # from libs.yuntongxun.CCPRestSDK import REST
 
@@ -74,7 +75,7 @@ class CCP(object):
             # 返回-1 表示发送失败
             return -1
 
-
+#
 # if __name__ == '__main__':
 #     ccp = CCP()
 #     # 注意： 测试的短信模板编号为1

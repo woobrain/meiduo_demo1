@@ -1,4 +1,5 @@
 class RETCODE:
+    OKO                 = "1"               #短信错误
     OK                  = "0"				#成功
     IMAGECODEERR        = "4001"			#验证码错误
     THROTTLINGERR       = "4002"			#短信发送频繁
