@@ -149,6 +149,11 @@ class EmailsView(LoginRequiredMixin, View):
         return JsonResponse({"code": RETCODE.OK, "errmsg": "发送成功"})
 
 
+class SiteView(View):
+    def get(self, request):
+        return render(request, 'user_center_site.html')
+
+
 class EmailsActiveView(View):
     def get(self, request):
         token_id = request.GET.get('token')
@@ -158,7 +163,7 @@ class EmailsActiveView(View):
             return HttpResponseBadRequest('激活失败')
         data = get_token(token_id)
         try:
-            user = User.objects.get(id=data.get('id'),email=data.get('email'))
+            user = User.objects.get(id=data.get('id'), email=data.get('email'))
         except Exception as e:
             return HttpResponseBadRequest('验证失败')
 

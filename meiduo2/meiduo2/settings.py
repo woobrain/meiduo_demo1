@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'apps.user',
     'apps.login1',
     # 'apps.oauth',
-    # 'apps.verifications',
-    # 'apps.areas',
+    'apps.verifications',
+    'apps.addrs',
     # 'apps.myaddr',
 
     # 此时使用此种方法在apps模块中需要name='apps.user'

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^emails/$',views.EmailsView.as_view(),name='emails'),
     url(r'^emailsactive/',views.EmailsActiveView.as_view(),name='emailsactive'),
     url(r'^center/$',views.UserVerifyView.as_view(),name='center'),
+    url(r'^site/$',views.SiteView.as_view(),name='site'),
     url(r'^usernames/(?P<username>[a-zA-Z0-9_-]{5,20})/$',views.UsernameView.as_view(),name='username'),
     url(r'^mobile/(?P<mobile>1[345789]\d{9})/$',views.UsermobileView.as_view(),name='mobile'),
 ]
