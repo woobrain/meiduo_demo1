@@ -14,13 +14,13 @@ class AreaView(View):
         parent_id = request.GET.get('area_id')
         if parent_id is None:
             pro = Area.objects.filter(parent_id=None)
-            pro_list=[]
+            p_list=[]
             for a in pro:
-                pro_list.append({
+                p_list.append({
                     "id":a.id,
                     "name":a.name
                 })
-            return JsonResponse({"code":RETCODE.OK,"province_list":pro_list})
+            return JsonResponse({"code":RETCODE.OK,"province_list":p_list})
         else:
             pro = Area.objects.filter(parent_id=parent_id)
             pro_list=[]
